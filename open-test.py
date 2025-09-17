@@ -31,6 +31,15 @@ def load_data(filename):
     return products
 
 
+def product_list(products):
+    number = 1
+    for product in products:
+        name = product["name"]
+        price = product["price"]
+        quantity = product["quantity"]
+        
+        print(f"{number}. {name} - {price} ({quantity} st)")
+        number += 1
     
 #TODO: hur gör man så funktionen load_data returnerar products istället?
 #TODO: gör så man kan se en numrerad lista som börjar på 1.
@@ -42,7 +51,7 @@ locale.setlocale(locale.LC_ALL, 'sv_SE.UTF-8')
 os.system('cls')
 
 products = load_data('db_products.csv')
-
+product_list(products)
 
     
 
