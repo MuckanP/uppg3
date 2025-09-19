@@ -41,6 +41,13 @@ def product_list(products):
         print(f"{number}. {name} - {price} ({quantity} st)")
         number += 1
     
+    
+def get_id(products, product_id):
+    for product in products:
+        if product["id"] == product_id:
+            return product
+    return None
+
 #TODO: hur gör man så funktionen load_data returnerar products istället?
 #TODO: gör så man kan se en numrerad lista som börjar på 1.
 #TODO: skriv en funktion som returnerar en specifik produkt med hjälp av id
@@ -51,9 +58,16 @@ locale.setlocale(locale.LC_ALL, 'sv_SE.UTF-8')
 os.system('cls')
 
 products = load_data('db_products.csv')
+
 product_list(products)
 
-    
+search_id = int(input("Ange produktens id: "))
+product = get_id(products, search_id)
+
+if product:
+    print(f"Hittade: {product['name']} - {format_currency(product['price'])}")
+else:
+    print("Produkten finns inte")
 
 
 
