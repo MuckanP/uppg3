@@ -48,6 +48,26 @@ def get_id(products, product_id):
             return product
     return None
 
+
+def add_product(products):
+    id = int(input("Välj ID: "))
+    name = input("Namn")
+    desc = input("Beskrivning")
+    price = float(input("Pris"))
+    quantity = int(input("Kvantitet"))
+    
+    products.append(
+        {
+            "id": id,
+            "name": name,
+            "desc": desc,
+            "price": price,
+            "quantity": quantity
+        }
+    )
+
+
+
 #TODO: hur gör man så funktionen load_data returnerar products istället?
 #TODO: gör så man kan se en numrerad lista som börjar på 1.
 #TODO: skriv en funktion som returnerar en specifik produkt med hjälp av id
@@ -61,14 +81,21 @@ products = load_data('db_products.csv')
 
 product_list(products)
 
-search_id = int(input("Ange produktens id: "))
+search_id = int(input("Ange produktens id: ")) - 1
 product = get_id(products, search_id)
 
 if product:
     print(f"Hittade: {product['name']} - {format_currency(product['price'])}")
 else:
     print("Produkten finns inte")
-
+    
+while True:
+    product_list(products)
+    
+    option = int(input("Vad vill du göra (1 = Visa, 2 = Lägg till)"))
+    if option == 1:
+        idx = int(input("Välj produkt med nummer: "))
+        get_id()
 
 
 
