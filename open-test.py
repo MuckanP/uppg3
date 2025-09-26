@@ -48,6 +48,12 @@ def get_id(products, product_id):
             return product
     return None
 
+def remove_id(products, product_id):
+    for product in products:
+        if product["id"] == product_id:
+            products.remove(product)
+            return True
+    return False
 
 def add_product(products):
     id = int(input("Välj ID: "))
@@ -66,6 +72,61 @@ def add_product(products):
         }
     )
 
+def update_qty(products):
+    product_id = int(input("Produktens id vars kvantitet du vill ändra: "))
+    products = get_id(products, product_id)
+    if product:
+        new_qty = int(input(f"Ny kvantitet för {product["name"]}: "))
+        product["quantity"] = new_qty
+        print("Kvantitet uppdaterad")
+    else: 
+        print("Produkten finns inte")
+        
+def update_product(products):
+    product_id = int(input("Ange produktens id för att uppdatera: "))
+    product = get_id(products, product_id)
+    if product:
+        product["name"] = input(f"Nytt namn ({product["name"]}): ") or product["name"]
+        product["desc"] = input(f"Ny beskrivning ({product["desc"]}): ") or product["desc"]
+        
+        try:
+            price_input = input(f"Nytt pris({product["price"]}):")
+            if price_input:
+                product["price"] = float(price_input)
+        except ValueError:
+            pass
+        
+        try:
+            qty_input = input(f"Ny kvantitet({product["quantity"]}): ")
+            if qty_input:
+                product["quantity"] = int(qty_input)
+        except ValueError:
+            pass
+        print("Produkt uppdaterad")
+    else:
+        print("Produkten finns inte")
+        
+def menu(produts):
+    while True:
+        print("1. Visa produkter")
+        print("2. Lägg till produkt")
+        print("3. Ta bort produkt")
+        print("4. Uppdatera kvantitet")
+        print("5. Ändra produkt")
+        
+        choice = int(input())
+        
+        if choice == 1:
+            product_list(products)
+        elif choice == 2:
+            add_product(products)
+        elif choice == 3:
+            prod_id = int(input("Ange id på produkt som ska tas bort: "))
+            if remove_id(products, prod_id):
+                print("Produkt borttagen")
+            else: 
+                print("Produkt finns inte")
+                
 
 
 #TODO: hur gör man så funktionen load_data returnerar products istället?
@@ -88,14 +149,19 @@ if product:
     print(f"Hittade: {product['name']} - {format_currency(product['price'])}")
 else:
     print("Produkten finns inte")
-    
-while True:
+
+
+product_list(products)
+
+id = int(input("Ange id på produkt som du vill ta bort: ")) -1
+removed = remove_id(products, id)
+
+if removed:
+    print("Produkten togs bort\n")
     product_list(products)
-    
-    option = int(input("Vad vill du göra (1 = Visa, 2 = Lägg till)"))
-    if option == 1:
-        idx = int(input("Välj produkt med nummer: "))
-        get_id()
+else: print("Produkten finns inte")
+
+
 
 
 
