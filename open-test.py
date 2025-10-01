@@ -126,6 +126,12 @@ def menu(produts):
                 print("Produkt borttagen")
             else: 
                 print("Produkt finns inte")
+        elif choice == "4":
+            update_qty(products)
+        elif choice == "5":
+            update_product(products)
+        else: print("Alternativ finns inte")
+        
                 
 
 
@@ -160,6 +166,8 @@ if removed:
     print("Produkten togs bort\n")
     product_list(products)
 else: print("Produkten finns inte")
+
+menu(products)
 
 
 
