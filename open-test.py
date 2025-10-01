@@ -56,21 +56,26 @@ def remove_id(products, product_id):
     return False
 
 def add_product(products):
-    id = int(input("Välj ID: "))
-    name = input("Namn")
-    desc = input("Beskrivning")
-    price = float(input("Pris"))
-    quantity = int(input("Kvantitet"))
+    if products:
+        new_id = max(p["id"] for p in products) + 1
+    else:
+        new_id = 1
+    
+    name = input("Namn: ")
+    desc = input("Beskrivning: ")
+    price = float(input("Pris: "))
+    quantity = int(input("Kvantitet: "))
     
     products.append(
         {
-            "id": id,
+            "id": new_id,
             "name": name,
             "desc": desc,
             "price": price,
             "quantity": quantity
         }
     )
+    print("Produkt tillagd med id ", new_id)
 
 def update_qty(products):
     product_id = int(input("Produktens id vars kvantitet du vill ändra: "))
@@ -106,9 +111,9 @@ def update_product(products):
     else:
         print("Produkten finns inte")
         
-def menu(produts):
+def menu(products):
     while True:
-        print("1. Visa produkter")
+        print("\n1. Visa produkter")
         print("2. Lägg till produkt")
         print("3. Ta bort produkt")
         print("4. Uppdatera kvantitet")
@@ -159,7 +164,7 @@ else:
 
 product_list(products)
 
-id = int(input("Ange id på produkt som du vill ta bort: ")) -1
+id = int(input("Ange id på produkt som du vill ta bort: ")) 
 removed = remove_id(products, id)
 
 if removed:
@@ -168,8 +173,4 @@ if removed:
 else: print("Produkten finns inte")
 
 menu(products)
-
-
-
-
 
