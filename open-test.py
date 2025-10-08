@@ -8,7 +8,6 @@ products = []           #lista
 def format_currency(value):
     return locale.currency(value,grouping=True)
 
-
 def load_data(filename): 
     with open(filename, 'r') as file:       #öppnar en fil med read-rättighet
         reader = csv.DictReader(file)
@@ -29,6 +28,15 @@ def load_data(filename):
                 }
             )
     return products
+
+def save_data(filename, products):
+    with open(filename, "w", newline="", encoding="utf-8") as file:
+        fieldnames = ["id", "name", "desc", "price", "quantity"]
+        write = csv.DictWriter(file, fieldnames=fieldnames)
+        
+        write.writeheader()
+        for product in products:
+            write.writerow(product)
 
 
 def product_list(products):
@@ -111,13 +119,14 @@ def update_product(products):
     else:
         print("Produkten finns inte")
         
-def menu(products):
+def menu(products, filename):
     while True:
         print("\n1. Visa produkter")
         print("2. Lägg till produkt")
         print("3. Ta bort produkt")
         print("4. Uppdatera kvantitet")
         print("5. Ändra produkt")
+        print("6. Spara och avsluta")
         
         choice = int(input())
         
@@ -135,10 +144,12 @@ def menu(products):
             update_qty(products)
         elif choice == "5":
             update_product(products)
+        elif choice == "6":
+            save_data(filename, products)
         else: print("Alternativ finns inte")
         
                 
-
+#TODO: är fördigt mm
 
 #TODO: hur gör man så funktionen load_data returnerar products istället?
 #TODO: gör så man kan se en numrerad lista som börjar på 1.
@@ -148,7 +159,7 @@ def menu(products):
 
 locale.setlocale(locale.LC_ALL, 'sv_SE.UTF-8')  
 os.system('cls')
-
+filename = "db_products.csv"
 products = load_data('db_products.csv')
 
 product_list(products)
@@ -172,5 +183,5 @@ if removed:
     product_list(products)
 else: print("Produkten finns inte")
 
-menu(products)
+menu(products, filename)
 
