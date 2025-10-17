@@ -1,32 +1,36 @@
 import csv
 import os
 import locale
-
+import sys
 
 products = []           #lista
 
 def format_currency(value):
     return locale.currency(value,grouping=True)
 
-def load_data(filename): 
-    with open(filename, 'r') as file:       #öppnar en fil med read-rättighet
-        reader = csv.DictReader(file)
-        for row in reader:
-            id = int(row['id'])
-            name = row['name']
-            desc = row['desc']
-            price = float(row['price'])
-            quantity = int(row['quantity'])
-            
-            products.append(
-                {                   
-                    "id": id,       
-                    "name": name,
-                    "desc": desc,
-                    "price": price,
-                    "quantity": quantity
-                }
-            )
+def load_data(filename):
+    products = []
+    try:
+        with open(filename, 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                try:
+                    products.append({
+                        "id": int(row['id']),
+                        "name": row['name'],
+                        "desc": row['desc'],
+                        "price": float(row['price']),
+                        "quantity": int(row['quantity'])
+                    })
+                except KeyError as e:
+                    print(f"Fel: Kolumnen {e} saknas i filen.")
+                    sys.exit(1) # avbryter koden
+                except ValueError as e:
+                    print(f"Felaktigt datavärde: {e}")
+    except FileNotFoundError:
+        print(f"Fel: Filen '{filename}' hittades inte.")
+        sys.exit(1)
+
     return products
 
 def save_data(filename, products):
@@ -158,7 +162,6 @@ def menu(products, filename):
 
 
 locale.setlocale(locale.LC_ALL, 'sv_SE.UTF-8')  
-os.system('cls')
 filename = "db_products.csv"
 products = load_data('db_products.csv')
 
